@@ -1,6 +1,6 @@
 {
     "name": "versh/sphinx-bundle",
-    "description": "Sphinx bundle; Entity to mxlpipe",
+    "description": "Sphinx bundle; Entity to xmlpipe",
     "require": {
         "php": ">=5.3.0"
     },
