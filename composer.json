@@ -3,5 +3,15 @@
     "description": "Sphinx bundle; Entity to mxlpipe",
     "require": {
         "php": ">=5.3.0"
+    },
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Vershinin Sergey",
+        "email": "versh23@gmail.com"
+      }
+    ],
+    "autoload": {
+      "psr-4": { "Versh\\SphinxBundle\\": "" }
     }
 }
