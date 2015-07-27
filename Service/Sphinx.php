@@ -2,9 +2,8 @@
 
 namespace Versh\SphinxBundle\Service;
 
+use Foolz\SphinxQL\Drivers\Pdo\Connection;
 use Doctrine\ORM\EntityManager;
-use Foolz\SphinxQL\Drivers\PdoConnection;
-use Foolz\SphinxQL\Drivers\SimpleConnection;
 use Foolz\SphinxQL\SphinxQL;
 
 class Sphinx
@@ -12,7 +11,7 @@ class Sphinx
     const FETCH_TYPE_SORTING = 1, FETCH_TYPE_QUERYING = 2;
 
     /**
-     * @var SimpleConnection
+     * @var Connection
      */
     private $sphinxCon;
 
@@ -26,7 +25,7 @@ class Sphinx
 
     public function __construct($config, EntityManager $em)
     {
-        $conn = new PdoConnection();
+        $conn = new Connection();
         $conn->setParams(array('host' => $config['host'], 'port' => $config['port']));
         $this->sphinxCon = $conn;
         $this->em = $em;
@@ -42,7 +41,7 @@ class Sphinx
     }
 
     /**
-     * @return SimpleConnection
+     * @return Connection
      */
     public function getConnection()
     {
