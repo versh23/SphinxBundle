@@ -1,4 +1,4 @@
 services:
     sphinx:
         class: Versh\SphinxBundle\Service\Sphinx
-        arguments: [%versh_sphinx.config%, @doctrine.orm.entity_manager]
+        arguments: [%versh_sphinx.config%, @doctrine.orm.default_entity_manager]

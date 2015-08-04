@@ -51,7 +51,7 @@ class Sphinx
     public function toEntity($index, $results, $type = self::FETCH_TYPE_SORTING)
     {
         $class = $this->indexes[$index];
-        $uniqFiled = $this->em->getClassMetadata($class)->getIdentifierFieldNames();
+        $uniqFiled = $this->em->getMetadataFactory()->getMetadataFor($class)->getIdentifierFieldNames();
         $getter = 'get'.ucfirst($uniqFiled[0]);
         $out = [];
 

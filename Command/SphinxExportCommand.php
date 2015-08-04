@@ -2,6 +2,7 @@
 
 namespace Versh\SphinxBundle\Command;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -19,7 +20,7 @@ class SphinxExportCommand extends ContainerAwareCommand
 {
 
     /**
-     * @var FileCacheReader
+     * @var AnnotationReader
      */
     private $reader;
 
@@ -32,20 +33,21 @@ class SphinxExportCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('sphinx:export')
+            ->setName('versh:sphinx:export')
             ->setDescription('Export xmlpipe2 file')
             ->addArgument(
                 'index',
                 InputArgument::REQUIRED,
                 'What is the name of the index?'
             )
-            ->addOption('debug', null, InputOption::VALUE_NONE);
+            ->addOption('debug', 'd', InputOption::VALUE_OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-        $this->reader = $this->getContainer()->get('annotation_reader');
+
+        $this->reader = $reader = new AnnotationReader();
         $config = $this->getContainer()->getParameter('versh_sphinx.config');
         $this->indexes = $config['indexes'];
 
