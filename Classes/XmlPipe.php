@@ -45,9 +45,11 @@ class XmlPipe  extends \XMLWriter{
         $this->startElement('sphinx:schema');
 
         // add fields to the schema
-        foreach ($this->fields as $field) {
+        foreach ($this->fields as $field => $values) {
             $this->startElement('sphinx:field');
             $this->writeAttribute('name', $field);
+            if(isset($values['attr']))
+                $this->writeAttribute('attr', $values['attr']);
             $this->endElement();
         }
 

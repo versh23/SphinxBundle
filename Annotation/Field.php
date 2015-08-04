@@ -7,5 +7,6 @@ class Field {
 
     public $source;
     public $name;
+    public $attr;
 
 }
