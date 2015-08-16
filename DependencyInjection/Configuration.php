@@ -24,18 +24,18 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('host')->defaultValue('127.0.0.1')->end()
                 ->scalarNode('port')->defaultValue('9306')->end()
+
+                ->arrayNode('indexes')
+                    ->useAttributeAsKey('key')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('class')->isRequired()->end()
+                            ->booleanNode('rt')->defaultFalse()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
-
-
-        $rootNode
-            ->children()
-                ->arrayNode('indexes')
-                ->useAttributeAsKey('key')
-                ->prototype('scalar')->end()
-                ->end()
-            ->end();
-
 
 
         return $treeBuilder;

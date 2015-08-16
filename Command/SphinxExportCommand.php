@@ -47,7 +47,6 @@ class SphinxExportCommand extends ContainerAwareCommand
     {
         $this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
-        $this->reader = $reader = new AnnotationReader();
         $config = $this->getContainer()->getParameter('versh_sphinx.config');
         $this->indexes = $config['indexes'];
 
@@ -59,8 +58,10 @@ class SphinxExportCommand extends ContainerAwareCommand
 
     private function export($name, $debug = false)
     {
-        $class = $this->indexes[$name];
-        list($attributes, $fields, $dql) = $this->loadClassMetadata($class);
+        $service = $this->getContainer()->get('sphinx');
+        $class = $this->indexes[$name]['class'];
+
+        list($attributes, $fields, $dql) = $service->loadClassMetadata($class);
 
         $doc = new XmlPipe(array(
             'indent' => $debug
@@ -78,8 +79,7 @@ class SphinxExportCommand extends ContainerAwareCommand
             $dql = "select a FROM $class a where a.id > :id";
         }
 
-        $query = $this->em->createQuery($dql)->setMaxResults(250);
-
+        $query = $this->em->createQuery($dql)->setMaxResults(500);
 
         while (true) {
             $query->setParameter('id', $currentId);
@@ -91,12 +91,12 @@ class SphinxExportCommand extends ContainerAwareCommand
                     $data = array();
 
                     foreach ($attributes as $k => $attribute) {
-                        $t = $this->get($object, $attribute['source']);
+                        $t = $service->get($object, $attribute['source']);
                         $data[$k] = $t;
                     }
 
                     foreach ($fields as $k => $source) {
-                        $data[$k] = $this->get($object, $source['source']);
+                        $data[$k] = $service->get($object, $source['source']);
                     }
                     $data['id'] = $currentId;
                     $doc->addDocument($data);
@@ -113,63 +113,5 @@ class SphinxExportCommand extends ContainerAwareCommand
         $doc->endOutput();
     }
 
-    private function loadClassMetadata($class)
-    {
-        $attributes = [];
-        $fields = [];
-        $dql = null;
-
-        $reflClass = new \ReflectionClass($class);
-
-        $annotations = $this->reader->getClassAnnotations($reflClass);
-
-        foreach ($annotations as $item) {
-            if ($item instanceof Schema) {
-                foreach ($item->schema as $constraint) {
-                    if ($constraint instanceof Attr) {
-                        $constraint->name = strtolower($constraint->name);
-                        $attributes[$constraint->name] = (array)$constraint;
-                    } elseif ($constraint instanceof Field) {
-                        $constraint->name = strtolower($constraint->name);
-                        $fields[$constraint->name] = (array)$constraint;
-                    }
-                }
-            } elseif ($item instanceof Dql) {
-                $dql = $item->dql;
-            }
-        }
-
-        return [
-            $attributes,
-            $fields,
-            $dql
-        ];
-    }
-
-    private function get($obj, $str)
-    {
-        $v = null;
-
-        if ('@' == $str[0]) { // repo function
-            $method = substr($str, 1);
-            $repo = $this->em->getRepository(get_class($obj));
-            $v = $repo->$method($obj);
-
-        } else {
-            $v = $obj;
-
-            $str = explode('.', $str);
-            foreach ($str as $s) {
-                $method = 'get' . ucfirst($s);
-                $v = $v->$method();
-            }
-        }
-
-        if (is_array($v)) {
-            $v = implode(',', $v);
-        }
-
-        return $v;
-    }
 
 }
