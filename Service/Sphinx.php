@@ -100,15 +100,23 @@ class Sphinx
 
     private function getRtName($entity)
     {
+
+
+        return $this->getRtNameByClass(get_class($entity));
+    }
+
+
+    public function getRtNameByClass($className)
+    {
         $nameRt = null;
 
         foreach ($this->indexes as $k => $v) {
-            if ($v['class'] == get_class($entity) && $v['rt'])
+            if ($v['class'] == $className && $v['rt'])
                 $nameRt = $k . '_rt';
         }
 
         if (!$nameRt)
-            throw new \Exception('not found rt index for class ' . get_class($entity));
+            throw new \Exception('not found rt index for class ' . $className);
 
         return $nameRt;
     }

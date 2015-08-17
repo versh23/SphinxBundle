@@ -20,11 +20,6 @@ class SphinxExportCommand extends ContainerAwareCommand
 {
 
     /**
-     * @var AnnotationReader
-     */
-    private $reader;
-
-    /**
      * @var EntityManager
      */
     private $em;
