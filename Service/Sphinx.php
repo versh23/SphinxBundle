@@ -152,10 +152,14 @@ class Sphinx
         $allFileds = [];
 
         foreach ($fields as $k => $v) {
-            $allFileds[$k] = $this->get($entity, $v['source']);
+            $value = $this->get($entity, $v['source']);
+            if(is_null($value)) $value = '';
+            $allFileds[$k] = $value;
         }
         foreach ($attributes as $k => $v) {
-            $allFileds[$k] = $this->get($entity, $v['source']);
+            $value = $this->get($entity, $v['source']);
+            if(is_null($value)) $value = '';
+            $allFileds[$k] = $value;
         }
 
         $allFileds['id'] = $entity->getId();

@@ -56,7 +56,9 @@ class SphinxConfigCommand extends ContainerAwareCommand
 
         foreach ($attributes as $k => $v )
         {
-            $output->writeln('  rt_attr_' . $v['type'] . ' = ' . $k);
+            $type = $v['type'];
+            if($type == 'int') $type = 'uint';
+            $output->writeln('  rt_attr_' . $type . ' = ' . $k);
         }
         foreach ($fields as $k => $v )
         {
