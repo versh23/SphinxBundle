@@ -52,6 +52,9 @@ class PaginateSphinxQbSubscriber implements EventSubscriberInterface
 
                 $event->items = $qb->getQuery()->getResult();
 
+                if(count($event->items) <= $event->count)
+                    $event->count = count($event->items);
+
             }else
             {
                 $event->items = [];
