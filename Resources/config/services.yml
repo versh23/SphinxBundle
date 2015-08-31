@@ -2,3 +2,8 @@ services:
     sphinx:
         class: Versh\SphinxBundle\Service\Sphinx
         arguments: [%versh_sphinx.config%, @doctrine.orm.default_entity_manager]
+    sphinx.paginator_subscriber:
+        class: Versh\SphinxBundle\Subscriber\PaginateSphinxQbSubscriber
+        tags:
+            - { name: knp_paginator.subscriber }
+        scope: request
