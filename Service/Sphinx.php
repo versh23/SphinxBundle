@@ -100,9 +100,7 @@ class Sphinx
 
     private function getRtName($entity)
     {
-
-
-        return $this->getRtNameByClass(get_class($entity));
+        return $this->getRtNameByClass(\Doctrine\Common\Util\ClassUtils::getClass($entity));
     }
 
 
