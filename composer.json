@@ -2,8 +2,8 @@
     "name": "versh/sphinx-bundle",
     "description": "Sphinx bundle; Entity to xmlpipe",
     "require": {
-        "php": ">=5.3.0",
-        "foolz/sphinxql-query-builder": "dev-master"
+        "php": ">=5.4.0",
+        "foolz/sphinxql-query-builder": "^1.0"
     },
     "license": "MIT",
     "authors": [
@@ -13,6 +13,6 @@
       }
     ],
     "autoload": {
-      "psr-4": { "Versh\\SphinxBundle\\": "" }
+      "psr-0": { "Versh\\SphinxBundle\\": "" }
     }
 }
