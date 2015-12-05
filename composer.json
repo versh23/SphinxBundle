@@ -12,6 +12,7 @@
         "email": "versh23@gmail.com"
       }
     ],
+    "target-dir": "Versh/SphinxBundle",
     "autoload": {
       "psr-0": { "Versh\\SphinxBundle\\": "" }
     }
