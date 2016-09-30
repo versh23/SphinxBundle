@@ -39,7 +39,7 @@ class SphinxTruncateAttachCommand extends ContainerAwareCommand
 
         $rtName = $service->getRtNameByClass($class);
 
-        $service->getBuilder()->query('TRUNCATE RTINDEX ' . $service->getConnection()->quoteIdentifier($rtName))->execute();
+        $service->getBuilder()->query('TRUNCATE RTINDEX ' . $rtName)->execute();
 
         Helper::create($service->getConnection())->attachIndex($index, $rtName)->execute();
 
